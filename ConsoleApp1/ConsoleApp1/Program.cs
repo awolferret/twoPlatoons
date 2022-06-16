@@ -19,17 +19,22 @@ namespace ConsoleApp1
 
         public Army()
         {
+            Console.WriteLine("Первый отряд:");
+            ShowList(_firstSoldiers);
+            Transfer();
+            Console.WriteLine(" ");
+            Console.WriteLine("Первый отряд:");
             ShowList(_firstSoldiers);
             Console.WriteLine(" ");
-            _secondSoldiers = Transfer();
+            Console.WriteLine("Второй отряд:");
             ShowList(_secondSoldiers);
         }
 
-        private List<Soldier> Transfer()
+        private void Transfer()
         {
-            var sorted = _firstSoldiers.OrderBy(soldier => soldier.Name);
-            var result = sorted.TakeWhile(soldier => soldier.Name.StartsWith("Б"));
-            return result.ToList();
+            var soldiers = _firstSoldiers.Where(soldier => soldier.Name.StartsWith("Б"));
+            _secondSoldiers = _secondSoldiers.Union(soldiers).ToList();
+            _firstSoldiers = _firstSoldiers.Except(soldiers).ToList();
         }
 
         private void ShowList(List<Soldier> list)
